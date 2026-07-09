@@ -40,7 +40,20 @@ export async function POST(request: Request) {
         },
       });
 
-      isMatch = !!mutualLike;
+      if (mutualLike) {
+        isMatch = true;
+
+        // Store the match, ordering IDs consistently to avoid duplicates
+        const [user1Id, user2Id] = [currentUserId, toUserId].sort();
+
+        await prisma.match.upsert({
+          where: {
+            user1Id_user2Id: { user1Id, user2Id },
+          },
+          update: {},
+          create: { user1Id, user2Id },
+        });
+      }
     }
 
     return NextResponse.json({ isMatch }, { status: 200 });

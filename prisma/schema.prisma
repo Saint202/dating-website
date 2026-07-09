@@ -39,3 +39,12 @@ model Like {
 
   @@unique([fromUserId, toUserId])
 }
+
+model Match {
+  id         String   @id @default(cuid())
+  user1Id    String
+  user2Id    String
+  createdAt  DateTime @default(now())
+
+  @@unique([user1Id, user2Id])
+}
