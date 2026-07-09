@@ -48,3 +48,11 @@ model Match {
 
   @@unique([user1Id, user2Id])
 }
+
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+}
