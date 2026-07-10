@@ -1,26 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff6f4;
+  --foreground: #1c1024;
+  --muted: #8b7e96;
+  --coral: #ff4d6d;
+  --coral-dark: #e03a56;
+  --gold: #ffb84d;
+  --card: #ffffff;
+  --border: #f0dfe0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --color-coral: var(--coral);
+  --color-coral-dark: var(--coral-dark);
+  --color-gold: var(--gold);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --font-display: "Fraunces", serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+.stack-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 1px 2px rgba(28, 16, 36, 0.04),
+    0 12px 24px -8px rgba(28, 16, 36, 0.12),
+    0 24px 48px -16px rgba(255, 77, 109, 0.08);
+  position: relative;
+}
+
+.stack-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  transform: rotate(-2deg);
+  z-index: -1;
 }
