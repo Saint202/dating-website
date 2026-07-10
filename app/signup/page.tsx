@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -30,7 +31,6 @@ export default function SignupPage() {
       return;
     }
 
-    // Auto sign-in after successful signup
     const signInResult = await signIn("credentials", {
       email,
       password,
@@ -48,51 +48,65 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="relative flex min-h-[85vh] items-center justify-center overflow-hidden px-4 py-12">
+      <div
+        className="fixed inset-0 bg-cover bg-center blur-sm scale-105"
+        style={{ backgroundImage: "url('/auth-photo.jpg')" }}
+      />
+      <div className="fixed inset-0 bg-background/60" />
+
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow-md"
+        className="stack-card relative z-10 w-full max-w-sm space-y-5 p-8"
       >
-        <h1 className="text-2xl font-bold text-gray-900">Create an account</h1>
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold text-foreground">Join us</h1>
+          <p className="mt-1 text-sm text-muted">Create your account to start matching</p>
+        </div>
 
         {error && (
-          <p className="rounded bg-red-50 p-2 text-sm text-red-600">{error}</p>
+          <p className="rounded-lg bg-coral/10 p-3 text-sm text-coral-dark">
+            {error}
+          </p>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
+          <label className="block text-sm font-medium text-foreground">Email</label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded border border-gray-300 p-2"
+            className="mt-1.5 w-full rounded-lg border border-border bg-white p-2.5 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
+          <label className="block text-sm font-medium text-foreground">Password</label>
           <input
             type="password"
             required
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded border border-gray-300 p-2"
+            className="mt-1.5 w-full rounded-lg border border-border bg-white p-2.5 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded bg-black py-2 text-white disabled:opacity-50"
+          className="w-full rounded-full bg-coral py-3 font-semibold text-white shadow-md shadow-coral/25 transition hover:bg-coral-dark disabled:opacity-50"
         >
           {loading ? "Creating account..." : "Sign up"}
         </button>
+
+        <p className="text-center text-sm text-muted">
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-coral hover:underline">
+            Log in
+          </Link>
+        </p>
       </form>
     </div>
   );

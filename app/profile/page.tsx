@@ -29,7 +29,6 @@ export default function ProfilePage() {
     try {
       let photoUrl = "";
 
-      // Step 1: upload photo if one was selected
       if (photoFile) {
         const formData = new FormData();
         formData.append("file", photoFile);
@@ -50,7 +49,6 @@ export default function ProfilePage() {
         photoUrl = uploadData.url;
       }
 
-      // Step 2: save profile data
       const profileRes = await fetch("/api/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -79,38 +77,49 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 py-10">
+    <div className="flex min-h-[85vh] items-center justify-center bg-background px-4 py-12">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow-md"
+        className="stack-card w-full max-w-sm space-y-5 p-8"
       >
-        <h1 className="text-2xl font-bold text-gray-900">Create your profile</h1>
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold text-foreground">Your profile</h1>
+          <p className="mt-1 text-sm text-muted">Tell people a bit about you</p>
+        </div>
 
         {error && (
-          <p className="rounded bg-red-50 p-2 text-sm text-red-600">{error}</p>
+          <p className="rounded-lg bg-coral/10 p-3 text-sm text-coral-dark">
+            {error}
+          </p>
         )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Photo
-          </label>
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-2 h-32 w-32 rounded-full object-cover"
+        <div className="flex flex-col items-center gap-3">
+          <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-background bg-background shadow-md">
+            {preview ? (
+              <img
+                src={preview}
+                alt="Preview"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-muted">
+                No photo
+              </div>
+            )}
+          </div>
+          <label className="cursor-pointer rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-foreground hover:bg-background">
+            Choose photo
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="hidden"
             />
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handlePhotoChange}
-            className="mt-2 w-full text-sm"
-          />
+          </label>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-foreground">
             Name
           </label>
           <input
@@ -118,12 +127,12 @@ export default function ProfilePage() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full rounded border border-gray-300 p-2"
+            className="mt-1.5 w-full rounded-lg border border-border bg-white p-2.5 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-foreground">
             Age
           </label>
           <input
@@ -132,26 +141,26 @@ export default function ProfilePage() {
             min={18}
             value={age}
             onChange={(e) => setAge(e.target.value)}
-            className="mt-1 w-full rounded border border-gray-300 p-2"
+            className="mt-1.5 w-full rounded-lg border border-border bg-white p-2.5 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-foreground">
             Bio
           </label>
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             rows={3}
-            className="mt-1 w-full rounded border border-gray-300 p-2"
+            className="mt-1.5 w-full rounded-lg border border-border bg-white p-2.5 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded bg-black py-2 text-white disabled:opacity-50"
+          className="w-full rounded-full bg-coral py-3 font-semibold text-white shadow-md shadow-coral/25 transition hover:bg-coral-dark disabled:opacity-50"
         >
           {loading ? "Saving..." : "Save profile"}
         </button>
