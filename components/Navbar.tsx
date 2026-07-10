@@ -1,37 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const pathname = usePathname();
-
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
 
   if (status === "loading") return null;
 
-  const wrapperClass = isAuthPage
-    ? "absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 py-4"
-    : "flex items-center justify-between border-b border-border bg-white/80 px-6 py-4 backdrop-blur-sm";
-
-  const logoClass = isAuthPage
-    ? "flex items-center gap-1.5 text-lg font-semibold text-white drop-shadow-sm"
-    : "flex items-center gap-1.5 text-lg font-semibold text-foreground";
-
-  const linkClass = isAuthPage
-    ? "text-sm font-medium text-white/90 drop-shadow-sm hover:text-white"
-    : "text-sm font-medium text-foreground/80 hover:text-foreground";
-
   if (!session) {
     return (
-      <nav className={wrapperClass}>
-        <Link href="/" className={logoClass}>
+      <nav className="flex items-center justify-between bg-white/30 px-6 py-4 backdrop-blur-md">
+        <Link href="/" className="flex items-center gap-1.5 text-lg font-semibold text-foreground">
           <span>💕</span> DatingApp
         </Link>
         <div className="flex items-center gap-3">
-          <Link href="/login" className={linkClass}>
+          <Link href="/login" className="text-sm font-medium text-foreground/80 hover:text-foreground">
             Log in
           </Link>
           <Link
@@ -46,17 +30,17 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={wrapperClass}>
-      <Link href="/browse" className={logoClass}>
+    <nav className="flex items-center justify-between bg-white/30 px-6 py-4 backdrop-blur-md">
+      <Link href="/browse" className="flex items-center gap-1.5 text-lg font-semibold text-foreground">
         <span>💕</span> DatingApp
       </Link>
       <div className="flex items-center gap-6">
-        <Link href="/browse" className={linkClass}>Browse</Link>
-        <Link href="/matches" className={linkClass}>Matches</Link>
-        <Link href="/profile" className={linkClass}>Profile</Link>
+        <Link href="/browse" className="text-sm font-medium text-foreground/80 hover:text-foreground">Browse</Link>
+        <Link href="/matches" className="text-sm font-medium text-foreground/80 hover:text-foreground">Matches</Link>
+        <Link href="/profile" className="text-sm font-medium text-foreground/80 hover:text-foreground">Profile</Link>
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="rounded-full border border-white/40 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm transition hover:bg-white/10"
+          className="rounded-full border border-foreground/20 px-4 py-1.5 text-sm font-medium text-foreground/80 backdrop-blur-sm transition hover:bg-white/40"
         >
           Log out
         </button>

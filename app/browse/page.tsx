@@ -52,7 +52,7 @@ export default function BrowsePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[80vh] items-center justify-center bg-background">
+      <div className="flex min-h-[80vh] items-center justify-center">
         <p className="text-muted">Loading profiles...</p>
       </div>
     );
@@ -81,11 +81,17 @@ export default function BrowsePage() {
             ))
             .reverse()
         ) : (
-          <div className="flex h-full flex-col items-center justify-center text-center">
-            <p className="text-muted">No more profiles to show right now.</p>
+          <div className="stack-card flex h-full flex-col items-center justify-center px-8 text-center">
+            <span className="text-5xl">✨</span>
+            <h2 className="mt-4 text-2xl font-semibold text-foreground">
+              You're all caught up
+            </h2>
+            <p className="mt-2 text-muted">
+              Check back soon for new people to meet.
+            </p>
             <button
               onClick={fetchProfiles}
-              className="mt-4 rounded-full bg-coral px-6 py-2.5 font-semibold text-white shadow-md shadow-coral/25 hover:bg-coral-dark"
+              className="mt-6 rounded-full bg-coral px-6 py-2.5 font-semibold text-white shadow-md shadow-coral/25 transition hover:bg-coral-dark"
             >
               Refresh
             </button>

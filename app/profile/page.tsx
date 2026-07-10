@@ -77,7 +77,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex min-h-[85vh] items-center justify-center bg-background px-4 py-12">
+    <div className="flex min-h-[85vh] items-center justify-center px-4 py-12">
       <form
         onSubmit={handleSubmit}
         className="stack-card w-full max-w-sm space-y-5 p-8"

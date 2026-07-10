@@ -34,16 +34,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-[85vh] items-center justify-center overflow-hidden px-4 py-12">
-      <div
-        className="fixed inset-0 bg-cover bg-center blur-sm scale-105"
-        style={{ backgroundImage: "url('/auth-photo.jpg')" }}
-      />
-      <div className="fixed inset-0 bg-background/60" />
-
+    <div className="flex min-h-[85vh] items-center justify-center px-4 py-12">
       <form
         onSubmit={handleSubmit}
-        className="stack-card relative z-10 w-full max-w-sm space-y-5 p-8"
+        className="stack-card w-full max-w-sm space-y-5 p-8"
       >
         <div className="text-center">
           <h1 className="text-3xl font-semibold text-foreground">Welcome back</h1>

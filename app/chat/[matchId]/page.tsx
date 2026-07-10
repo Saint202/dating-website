@@ -21,7 +21,6 @@ export default function ChatPage() {
 
   useEffect(() => {
     fetchMessages();
-    // Get current user's session to know which messages are "mine"
     fetch("/api/auth/session")
       .then((res) => res.json())
       .then((data) => setCurrentUserId(data?.user?.id ?? null));
@@ -30,7 +29,7 @@ export default function ChatPage() {
   const fetchMessages = async () => {
     const res = await fetch(`/api/messages?matchId=${matchId}`);
     const data = await res.json();
-    setMessages(data);
+    setMessages(Array.isArray(data) ? data : []);
     setLoading(false);
   };
 
@@ -46,62 +45,64 @@ export default function ChatPage() {
 
     if (res.ok) {
       setNewMessage("");
-      fetchMessages(); // refresh the list after sending
+      fetchMessages();
     }
   };
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <p className="text-gray-500">Loading messages...</p>
+      <div className="flex min-h-[80vh] items-center justify-center">
+        <p className="text-muted">Loading messages...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50 p-4">
-      <h1 className="mb-4 text-xl font-bold text-gray-900">Chat</h1>
+    <div className="flex min-h-[85vh] flex-col px-4 py-8">
+      <div className="mx-auto flex w-full max-w-lg flex-1 flex-col">
+        <h1 className="mb-4 text-2xl font-semibold text-foreground">Chat</h1>
 
-      <div className="flex-1 space-y-2 overflow-y-auto rounded-lg bg-white p-4 shadow-sm">
-        {messages.length === 0 ? (
-          <p className="text-gray-400">No messages yet. Say hi!</p>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${
-                msg.senderId === currentUserId ? "justify-end" : "justify-start"
-              }`}
-            >
+        <div className="stack-card flex-1 space-y-3 overflow-y-auto p-5">
+          {messages.length === 0 ? (
+            <p className="text-center text-muted">No messages yet. Say hi! 👋</p>
+          ) : (
+            messages.map((msg) => (
               <div
-                className={`max-w-xs rounded-lg px-3 py-2 ${
-                  msg.senderId === currentUserId
-                    ? "bg-black text-white"
-                    : "bg-gray-200 text-gray-900"
+                key={msg.id}
+                className={`flex ${
+                  msg.senderId === currentUserId ? "justify-end" : "justify-start"
                 }`}
               >
-                {msg.content}
+                <div
+                  className={`max-w-xs rounded-2xl px-4 py-2 ${
+                    msg.senderId === currentUserId
+                      ? "bg-coral text-white"
+                      : "bg-background text-foreground"
+                  }`}
+                >
+                  {msg.content}
+                </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
 
-      <form onSubmit={handleSend} className="mt-4 flex gap-2">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type a message..."
-          className="flex-1 rounded border border-gray-300 p-2"
-        />
-        <button
-          type="submit"
-          className="rounded bg-black px-4 py-2 text-white"
-        >
-          Send
-        </button>
-      </form>
+        <form onSubmit={handleSend} className="mt-4 flex gap-2">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+            className="flex-1 rounded-full border border-border bg-white p-3 px-4 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
+          />
+          <button
+            type="submit"
+            className="rounded-full bg-coral px-6 py-3 font-semibold text-white shadow-md shadow-coral/25 transition hover:bg-coral-dark"
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

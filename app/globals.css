@@ -56,3 +56,17 @@ h1, h2, h3 {
   transform: rotate(-2deg);
   z-index: -1;
 }
+
+.app-bg {
+  background: radial-gradient(
+      circle at 15% 10%,
+      rgba(255, 184, 77, 0.12),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(255, 77, 109, 0.1),
+      transparent 45%
+    ),
+    var(--background);
+}

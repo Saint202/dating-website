@@ -30,6 +30,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <div
+          className="fixed inset-0 -z-10 bg-cover bg-center blur-sm scale-105"
+          style={{ backgroundImage: "url('/auth-photo.jpg')" }}
+        />
+        <div className="fixed inset-0 -z-10 bg-background/75" />
+
         <Providers>
           <Navbar />
           <main className="flex-1">{children}</main>
