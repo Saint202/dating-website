@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SwipeCard from "@/components/SwipeCard";
 
 type Profile = {
   id: string;
@@ -13,7 +14,6 @@ type Profile = {
 
 export default function BrowsePage() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [matchMessage, setMatchMessage] = useState("");
 
@@ -26,13 +26,15 @@ export default function BrowsePage() {
     const res = await fetch("/api/browse");
     const data = await res.json();
     setProfiles(data);
-    setCurrentIndex(0);
     setLoading(false);
   };
 
   const handleSwipe = async (liked: boolean) => {
-    const currentProfile = profiles[currentIndex];
+    const currentProfile = profiles[0];
     if (!currentProfile) return;
+
+    // Remove the swiped card from the stack immediately (optimistic UI)
+    setProfiles((prev) => prev.slice(1));
 
     const res = await fetch("/api/swipe", {
       method: "POST",
@@ -43,76 +45,67 @@ export default function BrowsePage() {
     const data = await res.json();
 
     if (data.isMatch) {
-      setMatchMessage(`You and ${currentProfile.name} matched!`);
+      setMatchMessage(`You and ${currentProfile.name} matched! 🎉`);
+      setTimeout(() => setMatchMessage(""), 3000);
     }
-
-    setCurrentIndex((prev) => prev + 1);
   };
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <p className="text-gray-500">Loading profiles...</p>
+      <div className="flex min-h-[80vh] items-center justify-center bg-background">
+        <p className="text-muted">Loading profiles...</p>
       </div>
     );
   }
 
-  const currentProfile = profiles[currentIndex];
-
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
+    <div className="flex min-h-[85vh] flex-col items-center justify-center bg-background px-4 py-8">
       {matchMessage && (
-        <div className="mb-4 rounded bg-green-100 p-3 text-center text-green-800">
+        <div className="mb-4 rounded-full bg-emerald-100 px-5 py-2 text-center font-medium text-emerald-700">
           {matchMessage}
         </div>
       )}
 
-      {currentProfile ? (
-        <div className="w-full max-w-sm rounded-lg bg-white shadow-md">
-          {currentProfile.photoUrl ? (
-            <img
-              src={currentProfile.photoUrl}
-              alt={currentProfile.name ?? "Profile photo"}
-              className="h-80 w-full rounded-t-lg object-cover"
-            />
-          ) : (
-            <div className="flex h-80 w-full items-center justify-center rounded-t-lg bg-gray-200 text-gray-400">
-              No photo
-            </div>
-          )}
-
-          <div className="p-4">
-            <h2 className="text-xl font-bold text-gray-900">
-              {currentProfile.name}, {currentProfile.age}
-            </h2>
-            {currentProfile.bio && (
-              <p className="mt-2 text-gray-600">{currentProfile.bio}</p>
-            )}
-          </div>
-
-          <div className="flex gap-4 p-4 pt-0">
+      <div className="relative h-[520px] w-full max-w-sm">
+        {profiles.length > 0 ? (
+          profiles
+            .slice(0, 3)
+            .map((profile, index) => (
+              <SwipeCard
+                key={profile.id}
+                profile={profile}
+                onSwipe={handleSwipe}
+                isTop={index === 0}
+                stackIndex={index}
+              />
+            ))
+            .reverse()
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <p className="text-muted">No more profiles to show right now.</p>
             <button
-              onClick={() => handleSwipe(false)}
-              className="flex-1 rounded border border-gray-300 py-3 font-medium text-gray-700 hover:bg-gray-100"
+              onClick={fetchProfiles}
+              className="mt-4 rounded-full bg-coral px-6 py-2.5 font-semibold text-white shadow-md shadow-coral/25 hover:bg-coral-dark"
             >
-              Pass
-            </button>
-            <button
-              onClick={() => handleSwipe(true)}
-              className="flex-1 rounded bg-black py-3 font-medium text-white hover:bg-gray-800"
-            >
-              Like
+              Refresh
             </button>
           </div>
-        </div>
-      ) : (
-        <div className="text-center">
-          <p className="text-gray-500">No more profiles to show right now.</p>
+        )}
+      </div>
+
+      {profiles.length > 0 && (
+        <div className="mt-6 flex gap-6">
           <button
-            onClick={fetchProfiles}
-            className="mt-4 rounded bg-black px-4 py-2 text-white"
+            onClick={() => handleSwipe(false)}
+            className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-border bg-white text-2xl shadow-md transition hover:scale-105"
           >
-            Refresh
+            ✕
+          </button>
+          <button
+            onClick={() => handleSwipe(true)}
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-coral text-2xl text-white shadow-md shadow-coral/30 transition hover:scale-105"
+          >
+            ♥
           </button>
         </div>
       )}
