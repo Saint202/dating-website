@@ -52,17 +52,27 @@ export default function BrowsePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[80vh] items-center justify-center">
-        <p className="text-muted">Loading profiles...</p>
+       <div className="flex min-h-[85vh] flex-col items-center justify-center px-4 py-8">
+        <div className="relative h-[520px] w-full max-w-sm">
+          <div className="stack-card h-full w-full animate-pulse overflow-hidden">
+            <div className="h-full w-full bg-border/60" />
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-[85vh] flex-col items-center justify-center bg-background px-4 py-8">
+    <div className="flex min-h-[85vh] flex-col items-center justify-cente px-4 py-8">
       {matchMessage && (
-        <div className="mb-4 rounded-full bg-emerald-100 px-5 py-2 text-center font-medium text-emerald-700">
-          {matchMessage}
+       <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 backdrop-blur-sm">
+          <div className="stack-card mx-4 max-w-sm animate-in fade-in zoom-in duration-300 px-8 py-10 text-center">
+            <span className="text-6xl">🎉</span>
+            <h2 className="mt-4 text-2xl font-semibold text-foreground">
+              It's a match!
+            </h2>
+            <p className="mt-2 text-muted">{matchMessage}</p>
+          </div>
         </div>
       )}
 
