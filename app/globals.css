@@ -71,3 +71,15 @@ h1, h2, h3 {
     ),
     var(--background);
 }
+
+button:not(:disabled) {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+button:not(:disabled):active {
+  transform: scale(0.96);
+}

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Navbar from "@/components/Navbar";
+import PageTransition from "@/components/PageTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +39,9 @@ export default function RootLayout({
 
         <Providers>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+             <PageTransition>{children}</PageTransition>
+          </main>
         </Providers>
       </body>
     </html>

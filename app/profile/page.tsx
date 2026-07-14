@@ -80,11 +80,11 @@ export default function ProfilePage() {
     <div className="flex min-h-[85vh] items-center justify-center px-4 py-12">
       <form
         onSubmit={handleSubmit}
-        className="stack-card w-full max-w-sm space-y-5 p-8"
+        className="stack-card w-full max-w-sm space-y-4 p-6"
       >
         <div className="text-center">
-          <h1 className="text-3xl font-semibold text-foreground">Your profile</h1>
-          <p className="mt-1 text-sm text-muted">Tell people a bit about you</p>
+          <h1 className="text-2xl font-semibold text-foreground">Your profile</h1>
+          <p className="text-sm text-muted">Tell people a bit about you</p>
         </div>
 
         {error && (
@@ -152,7 +152,7 @@ export default function ProfilePage() {
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            rows={3}
+            rows={2}
             className="mt-1.5 w-full rounded-lg border border-border bg-white p-2.5 text-foreground focus:border-coral focus:outline-none focus:ring-2 focus:ring-coral/20"
           />
         </div>
