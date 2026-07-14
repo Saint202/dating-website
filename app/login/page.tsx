@@ -26,7 +26,11 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid email or password");
+      if (result.error === "CallbackRouteError" || result.error === "Configuration") {
+        setError("Too many login attempts. Please try again in a few minutes.");
+      } else {
+        setError("Invalid email or password");
+      }
       return;
     }
 

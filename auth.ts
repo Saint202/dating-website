@@ -16,12 +16,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!email || !password) return null;
 
+        const { checkRateLimit, resetRateLimit } = await import("@/lib/rateLimit");
+        const rateLimitKey = `login:${email.toLowerCase()}`;
+        const { allowed } = checkRateLimit(rateLimitKey);
+
+        if (!allowed) {
+          throw new Error("RATE_LIMITED");
+        }
+
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user || !user.password) return null;
 
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) return null;
 
+        resetRateLimit(rateLimitKey);
         return { id: user.id, email: user.email };
       },
     }),
